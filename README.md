@@ -3,7 +3,7 @@
 ### Kelompok: it12
 ### Anggota: 
 Nama | NRP | 
---- | --- | --- |
+--- | --- |
 Rehnana Putri Salsabilla | 5027221015 | 
 Muhammad Rifqi Oktaviansyah | 5027221067 | 
 
