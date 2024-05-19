@@ -5,7 +5,7 @@
 Nama | NRP | Github 
 --- | --- | --- |
 Rehnana Putri Salsabilla | 5027221015 | 
- | 50272210 | 
+Muhammad Rifqi Oktaviansyah | 5027221067 | 
 
 ## Daftar isi
 - [Topologi](#topologi)
