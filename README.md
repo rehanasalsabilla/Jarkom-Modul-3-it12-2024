@@ -1,8 +1,8 @@
 # Jarkom-Modul-3-it12-2024
 
-## Kelompok: IT12
+### Kelompok: it12
 ### Anggota: 
-Nama | NRP | Github 
+Nama | NRP | 
 --- | --- | --- |
 Rehnana Putri Salsabilla | 5027221015 | 
 Muhammad Rifqi Oktaviansyah | 5027221067 | 
