@@ -10,6 +10,7 @@ Muhammad Rifqi Oktaviansyah | 5027221067 |
 ## Daftar isi
 - [Topologi](#topologi)
 - [Konfigurasi](#konfigurasi)
+- [Setting Node](#setting node)
 - [Soal 1](#soal-1)
 - [Soal 2](#soal-2)
 - [Soal 3](#soal-3)
@@ -32,8 +33,193 @@ Muhammad Rifqi Oktaviansyah | 5027221067 |
 - [Soal 20](#soal-20)
 
 ## Topologi
+![Screenshot 2024-05-19 211343](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/56e13101-32cb-4195-b7f5-87a86ef576e0)
 
 ## Konfigurasi
+### Arakis ( Router (DHCP Relay) )
+```
+auto eth0
+iface eth0 inet dhcp
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.173.0.0/16
+
+auto eth1
+iface eth1 inet static
+	address 192.239.1.0
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 192.239.2.0
+	netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+	address 192.239.3.0
+	netmask 255.255.255.0
+
+auto eth4
+iface eth4 inet static
+	address 192.239.4.0
+	netmask 255.255.255.0
+```
+
+### Mohiam ( DHCP Server )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.3.3
+	netmask 255.255.255.0
+	gateway 192.239.3.0
+```
+
+### Irulan ( DNS Server )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.3.2
+	netmask 255.255.255.0
+	gateway 192.239.3.0
+```
+
+### Chani ( Database Server )
+```
+auto eth0
+iface eth0 inet static
+	address 192.173.4.3
+	netmask 255.255.255.0
+	gateway 192.173.4.0
+```
+
+### Stilgar ( Load Balancer )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.4.2
+	netmask 255.255.255.0
+	gateway 192.239.4.0
+```
+
+### Leto ( Laravel Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.2.3
+	netmask 255.255.255.0
+	gateway 192.239.2.0
+```
+
+### Duncan ( Laravel Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.2.4
+	netmask 255.255.255.0
+	gateway 192.239.2.0
+```
+
+### Jessica ( Laravel Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.2.5
+	netmask 255.255.255.0
+	gateway 192.239.2.0
+```
+
+### Vladimir ( PHP Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.1.3
+	netmask 255.255.255.0
+	gateway 192.239.1.0
+```
+
+### Rabban ( PHP Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.1.4
+	netmask 255.255.255.0
+	gateway 192.239.1.0
+```
+
+### Feyd ( PHP Worker )
+```
+auto eth0
+iface eth0 inet static
+	address 192.239.1.5
+	netmask 255.255.255.0
+	gateway 192.239.1.0
+```
+
+### Dmitri & Paul ( Client )
+```
+auto eth0
+iface eth0 inet dhcp
+```
+
+## Setting Node 
+- Melakukan Pengaturan pada ``*.bashrc*`` atau melakukan setting pada script masing" node nya.
+### DNS Server
+```
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install bind9 -y
+```
+### DHCP Server
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-server -y
+```
+### Router (DHCP Relay)
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.239.0.0/16
+apt-get update
+apt install isc-dhcp-relay -y
+```
+### Database Server
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+```
+### Load Balancer
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install apache2-utils -y
+apt-get install nginx -y
+apt-get install lynx -y
+```
+### Laravel Worker
+```
+```
+### PHP Worker
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install nginx -y
+apt-get install wget -y
+apt-get install unzip -y
+apt-get install lynx -y
+apt-get install htop -y
+apt-get install apache2-utils -y
+apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip -y
+
+service nginx start
+service php7.3-fpm start
+```
+### Client
+```
+apt update
+apt install lynx -y
+apt install htop -y
+apt install apache2-utils -y
+apt-get install jq -y
+```
 
 # Penyelesaian 
 ## Soal 1
@@ -79,5 +265,37 @@ Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuj
 
 ## Soal 12
 Selanjutnya LB ini hanya boleh diakses oleh client dengan IP 192.239.1.37, 192.239.1.67, 192.239.2.203, dan 192.239.2.207.
+
+## Soal 13
+Tidak mau kalah dalam perburuan spice, House atreides juga mengatur para pekerja di atreides.yyy.com.
+Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica.
+
+## Soal 14
+Leto, Duncan, dan Jessica memiliki atreides Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
+
+## Soal 15
+atreides Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada peta.
+a. POST /auth/register
+
+## Soal 16 
+b. POST /auth/login
+
+## Soal 17 
+GET /me
+
+## Soal 18 
+Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur atreides Channel maka implementasikan Proxy Bind pada Stilgar untuk mengaitkan IP dari Leto, Duncan, dan Jessica.
+
+## Soal 19 
+Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Leto, Duncan, dan Jessica. Untuk testing kinerja naikkan 
+- pm.max_children
+- pm.start_servers
+- pm.min_spare_servers
+- pm.max_spare_servers
+sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada PDF.
+
+## Soal 20 
+Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Stilgar. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
+
 
 
