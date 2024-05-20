@@ -10,7 +10,7 @@ Muhammad Rifqi Oktaviansyah | 5027221067 |
 ## Daftar isi
 - [Topologi](#topologi)
 - [Konfigurasi](#konfigurasi)
-- [Setting Node](#setting node)
+- [Setting Node](#SettingNode)
 - [Soal 1](#soal-1)
 - [Soal 2](#soal-2)
 - [Soal 3](#soal-3)
@@ -224,12 +224,86 @@ apt-get install jq -y
 # Penyelesaian 
 ## Soal 1
 Lakukan konfigurasi sesuai dengan peta yang sudah diberikan.
-Planet Caladan sedang mengalami krisis karena kehabisan spice, klan atreides berencana untuk melakukan eksplorasi ke planet arakis dipimpin oleh duke leto mereka meregister domain name atreides.yyy.com untuk worker Laravel mengarah pada Leto Atreides . Namun ternyata tidak hanya klan atreides yang berusaha melakukan eksplorasi, Klan harkonen sudah mendaftarkan domain name harkonen.yyy.com untuk worker PHP (0) mengarah pada Vladimir Harkonen
+Planet Caladan sedang mengalami krisis karena kehabisan spice, klan atreides berencana untuk melakukan eksplorasi ke planet arakis dipimpin oleh duke leto mereka meregister domain name atreides.yyy.com untuk worker Laravel mengarah pada Leto Atreides . Namun ternyata tidak hanya klan atreides yang berusaha melakukan eksplorasi, Klan harkonen sudah mendaftarkan domain name harkonen.yyy.com untuk worker PHP (0) mengarah pada Vladimir Harkonen.
+#### Penyelesaian 
+- Mengatur Script pada Node **Irulan.sh** ( DNS Server )
+```
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install bind9 -y
+
+echo 'options {
+      directory "/var/cache/bind";
+
+      forwarders {
+              192.168.122.1;
+      };
+
+      // dnssec-validation auto;
+      allow-query{any;};
+      auth-nxdomain no;    # conform to RFC1035
+      listen-on-v6 { any; };
+}; ' > /etc/bind/named.conf.options
+
+echo "zone \"atreides.it12.com\" {
+	type master;
+	file \"/etc/bind/jarkom/atreides.it12.com\";
+};
+
+zone \"harkonen.it12.com\" {
+	type master;
+	file \"/etc/bind/jarkom/harkonen.it12.com\";
+};
+" > /etc/bind/named.conf.local
+
+mkdir /etc/bind/jarkom
+
+atreides="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    atreides.it12.com. root.atreides.it12.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    atreides.it12.com.
+@       IN    A    192.239.2.3
+"
+echo "$atreides" > /etc/bind/jarkom/atreides.it12.com
+
+harkonen="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    harkonen.it12.com. root.harkonen.it12.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    harkonen.it12.com.
+@       IN    A    192.239.1.3
+"
+echo "$harkonen" > /etc/bind/jarkom/harkonen.it12.com
+
+
+service bind9 start
+```
+## Result Nomor 1
+
 
 ## Soal 2
 Kemudian, karena masih banyak spice yang harus dikumpulkan, bantulah para aterides untuk bersaing dengan harkonen dengan kriteria berikut.:
 Semua CLIENT harus menggunakan konfigurasi dari DHCP Server.
 Client yang melalui House Harkonen mendapatkan range IP dari 192.239.1.14 - 192.239.1.28 dan 192.239.1.49 - 192.239.1.70
+#### Penyelesaian 
+- Melkaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
 
 ## Soal 3
 Client yang melalui House Atreides mendapatkan range IP dari 192.239.2.15 - 192.239.2.25 dan 192.239.2 .200 - 192.239.2.210
