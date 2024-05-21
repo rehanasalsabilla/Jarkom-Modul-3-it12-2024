@@ -10,7 +10,7 @@ Muhammad Rifqi Oktaviansyah | 5027221067 |
 ## Daftar isi
 - [Topologi](#topologi)
 - [Konfigurasi](#konfigurasi)
-- [Setting Node](#Setting_Node)
+- [Setting Node](#Setting-Node)
 - [Soal 1](#soal-1)
 - [Soal 2](#soal-2)
 - [Soal 3](#soal-3)
