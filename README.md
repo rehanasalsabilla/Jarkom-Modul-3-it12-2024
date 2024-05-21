@@ -367,22 +367,276 @@ Selanjutnya LB ini hanya boleh diakses oleh client dengan IP 192.239.1.37, 192.2
 Tidak mau kalah dalam perburuan spice, House atreides juga mengatur para pekerja di atreides.yyy.com.
 Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica.
 
+### Penyelesaian
+Masukkan konfigurasi berikut pada ```Database Server``` yaitu ```Chani```
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+
+# Db akan diakses oleh 3 worker, maka 
+echo '# This group is read both by the client and the server
+# use it for options that affect everything
+[client-server]
+
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+# Options affecting the MySQL server (mysqld)
+[mysqld]
+skip-networking=0
+skip-bind-address
+' > /etc/mysql/my.cnf
+
+
+cd /etc/mysql/mariadb.conf.d
+nano 50-server.cnf
+
+service mysql restart
+```
+Lalu, ubah ```bind-address``` pada path ```/etc/mysql/mariadb.conf.d/50-server.cnf``` menjadi ```0.0.0.0```
+```
+bind-address            = 0.0.0.0
+```
+Jangan lupa untuk merestart mysql dengan ```service mysql restart```
+Setelah itu, masuk mysql dengan command ```mysql -u root -p``` dan jalankan command berikut 
+```
+#CREATE USER 'kelompokit12'@'%' IDENTIFIED BY 'passwordit12';
+#CREATE USER 'kelompokit12'@'localhost' IDENTIFIED BY 'passwordit12';
+#CREATE DATABASE dbkelompokit12;
+#GRANT ALL PRIVILEGES ON *.* TO 'kelompokit12'@'%';
+#GRANT ALL PRIVILEGES ON *.* TO 'kelompokit12'@'localhost';
+#FLUSH PRIVILEGES;
+```
+### Hasil
+Setelah itu lakukan pengecekan di salah satu Laravel Worker. Disini akan dilakukan pengecekan di worker ```Leto``` dengan memasukkan command berikut
+```
+mariadb --host=192.239.4.3 --port=3306 --user=kelompokit12 --password=passwordit12 dbkelompokit12 -e "SHOW DATABASES;"
+```
+![no13 worker](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/1a51fd71-02ac-4e9a-89e9-ddb40b6b3b5e)
+
 ## Soal 14
 Leto, Duncan, dan Jessica memiliki atreides Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
 
+### Penyelesaian
+Masukkan command berikut pada Laravel Worker untuk menginstall ```composer```, ```git```, dan ```clone repo```
+```
+wget https://getcomposer.org/download/2.0.13/composer.phar
+chmod +x composer.phar
+mv composer.phar /usr/local/bin/composer
+
+apt-get install git -y
+cd /var/www && git clone https://github.com/martuafernando/laravel-praktikum-jarkom
+cd /var/www/laravel-praktikum-jarkom && composer update
+
+cd /var/www/laravel-praktikum-jarkom && cp .env.example .env
+echo 'APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=192.239.4.3
+DB_PORT=3306
+DB_DATABASE=dbkelompokit12
+DB_USERNAME=kelompokit12
+DB_PASSWORD=passwordit12
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
+
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"' > /var/www/laravel-praktikum-jarkom/.env
+cd /var/www/laravel-praktikum-jarkom && php artisan key:generate
+cd /var/www/laravel-praktikum-jarkom && php artisan config:cache
+cd /var/www/laravel-praktikum-jarkom && php artisan migrate
+cd /var/www/laravel-praktikum-jarkom && php artisan db:seed
+cd /var/www/laravel-praktikum-jarkom && php artisan storage:link
+cd /var/www/laravel-praktikum-jarkom && php artisan jwt:secret
+cd /var/www/laravel-praktikum-jarkom && php artisan config:clear
+chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/storage
+```
+Lalu, lakukan konfigurasi ```nginx``` sebagai berikut pada masing-masing worker dimana portnya sebagai berikut
+```
+192.239.2.3:8001; # leto 
+192.239.2.4:8002; # Duncan
+192.239.2.5:8003; # Jessica
+```
+Dengan konfigurasi sebagai berikut
+```
+echo 'server {
+    listen <X>; 
+
+    root /var/www/laravel-praktikum-jarkom/public;
+
+    index index.php index.html index.htm;
+    server_name _;
+
+    location / {
+            try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # pass PHP scripts to FastCGI server
+    location ~ \.php$ {
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+    }
+
+    location ~ /\.ht {
+            deny all;
+    }
+
+    error_log /var/log/nginx/implementasi_error.log;
+    access_log /var/log/nginx/implementasi_access.log;
+}' > /etc/nginx/sites-available/laravel-worker
+
+# Enable the site and restart Nginx
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/
+nginx -t
+/etc/init.d/nginx restart
+/etc/init.d/php8.0-fpm restart
+```
+Dimana <X> merupakan port masing-masing worker.
+### Hasil
+Setelah berhasil melakukan langkah-langkah diatas lakukan testing dengan cara mengetik command
+```
+lynx localhost:[PORT]
+```
+Dimana PORT yang ada adalah ```8001``` ```8002``` dan ```8003``` sesuai dengan setup nginx sebelumnya
+![no14 isi laravel](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/ed62c58a-3e02-46f6-ab1f-1d093d50a539)
 ## Soal 15
 atreides Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada peta.
 a. POST /auth/register
 
+### Penyelesaian
+Untuk mengerjakan soal ini diperlukan melakukan testing menggunakan Apache Benchmark pada salah satu worker saja. Disini kami menggunakan worker laravel ```Leto``` yang nantinya akan ditesting oleh client ```Paul```. Sebelum dilakukan testing, kami menggunakan file .json yang akan digunakan sebagai body yang akan dikirim pada endpoint /api/auth/register seperti berikut
+```
+echo '
+{
+  "username": "kelompokit12",
+  "password": "passwordit12",
+}' > creds.json
+```
+Lalu, ketik command berikut pada client ```Paul```
+```
+ab -n 100 -c 10 -p creds.json -T application/json http://192.239.2.3:8001/api/auth/register
+```
+### Hasil
+![no15](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/606d1440-fbbe-4658-8df0-36505e623753)
+
 ## Soal 16 
 b. POST /auth/login
+
+### Penyelesaian
+Untuk mengerjakan soal ini diperlukan melakukan testing menggunakan Apache Benchmark pada salah satu worker saja. Disini kami menggunakan worker laravel ```Leto``` yang nantinya akan ditesting oleh client ```Paul```. Sebelum dilakukan testing, kami menggunakan file .json yang sama dengan soal sebelumnya yang akan digunakan sebagai body yang akan dikirim pada endpoint /api/auth/login seperti berikut
+
+Ketik command berikut pada client ```Paul```
+```
+ab -n 100 -c 10 -p creds.json -T application/json http://192.239.2.5:8003/api/auth/login
+```
+### Hasil 
+![no16](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/a9181274-21dd-4a6f-9b20-ea1986642abc)
 
 ## Soal 17 
 GET /me
 
+### Penyelesaian 
+Untuk mengerjakan soal ini diperlukan melakukan testing menggunakan Apache Benchmark pada salah satu worker saja. Disini kami menggunakan worker laravel ```Leto``` yang nantinya akan ditesting oleh client ```Paul```.Kami menggunakan file .json yang sama dengan soal sebelumnya.  Sebelum dilakukan testing, ada beberapa konfigurasi yang perlu dilakukan
+
+Dapatkan token terlebih dahulu dengan mengakses endpoint /api/me
+```
+curl -X POST -H "Content-Type: application/json" -d @creds.json http://192.239.2.3:8001/api/auth/login > login_output.txt
+```
+Lalu, jalankan command berikut untuk melakukan set ```token``` secara global
+```
+token=$(cat login_output.txt | jq -r '.token')
+```
+Setelah, itu jalankan perintah tersebut untuk melakukan testing
+```
+ab -n 100 -c 10 -H "Authorization: Bearer $token" http://192.239.2.3:8001/api/api/me
+```
+### Hasil
+![no17](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/81327707-89a6-47f3-b7e1-678e9c738e1f)
 ## Soal 18 
 Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur atreides Channel maka implementasikan Proxy Bind pada Stilgar untuk mengaitkan IP dari Leto, Duncan, dan Jessica.
 
+### Penyelesaian
+Sebelum mengerjakan perlu untuk melakukan setup terlebih dahulu. Setelah itu, karena hanya diberikan perintah ketiga worker berjalan secara adil, kami memberikan implementasi dari ```Load Balancing``` karena sesuai dengan definisi nya yaitu membagi rata beban kerja. Maka dari itu, berikut merupakan konfigurasi ```nginx```
+```
+echo 'upstream worker {
+    server 192.239.2.3:8001;
+    server 192.239.2.4:8002;
+    server 192.239.2.5:8003;
+}
+
+server {
+    listen 80;
+    server_name atreides.channel.it26.com www.atreides.channel.it26.com;
+
+    location / {
+        proxy_pass http://worker;
+    }
+} 
+' > /etc/nginx/sites-available/laravel-worker
+
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/laravel-worker
+
+service nginx restart
+```
+### Hasil 
+Setelah melakukan konfigurasi pada load balancer pada ```Stilgar```. Sekarang waktunya melakukan testing pada client ```Paul``` dengan menjalankan perintah berikut
+```
+ab -n 100 -c 10 -p creds.json -T application/json http://www.atreides.channel.it12.com/api/auth/login
+```
+Dengan hasil sebagai berikut
+![no18 benchmark](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/65fddc5a-53d5-488e-a24f-c4e8b4d65a06)
+
+Jessica
+
+![no18 jessica](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/143682058/1c73cfc4-23a8-4a6b-a660-0db0b3a8e6cf)
 ## Soal 19 
 Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Leto, Duncan, dan Jessica. Untuk testing kinerja naikkan 
 - pm.max_children
