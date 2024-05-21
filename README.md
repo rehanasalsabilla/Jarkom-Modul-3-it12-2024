@@ -296,6 +296,13 @@ echo "$harkonen" > /etc/bind/jarkom/harkonen.it12.com
 service bind9 start
 ```
 ## Result Nomor 1
+#### Paul ( Client )
+![Screenshot 2024-05-19 212734](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/7654f5fc-2dd4-4768-9437-595906e415c6)
+![Screenshot 2024-05-19 212811](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/176c4925-4274-4796-bbb1-04f276c8921d)
+
+#### Dmitri ( Client )
+![Screenshot 2024-05-19 212945](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/ad5b4b5c-97a4-41bf-ab3d-d697b8863067)
+![Screenshot 2024-05-19 213022](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/56dba604-f055-4836-af79-13066bffc716)
 
 
 ## Soal 2
@@ -305,17 +312,11 @@ Client yang melalui House Harkonen mendapatkan range IP dari 192.239.1.14 - 192.
 #### Penyelesaian 
 - Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
 
-## Result Nomor 2
-
 ## Soal 3
 Client yang melalui House Atreides mendapatkan range IP dari 192.239.2.15 - 192.239.2.25 dan 192.239.2 .200 - 192.239.2.210
 
-## Result Nomor 3
-
 ## Soal 4
 Client mendapatkan DNS dari Princess Irulan dan dapat terhubung dengan internet melalui DNS tersebut 
-
-## Result Nomor 4
 
 ## Soal 5 
 Durasi DHCP server meminjamkan alamat IP kepada Client yang melalui House Harkonen selama 5 menit sedangkan pada client yang melalui House Atreides selama 20 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit 
