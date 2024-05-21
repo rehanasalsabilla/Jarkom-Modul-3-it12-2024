@@ -328,12 +328,16 @@ Seiring berjalannya waktu kondisi semakin memanas, untuk bersiap perang. Klan Ha
 Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
 
 ## Result Nomor 6
+![Screenshot 2024-05-19 224304](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8512605c-4542-4464-93f5-5adc0be5fecf)
+![Screenshot 2024-05-19 224830](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/9990e715-c38e-4557-b391-e177d6508004)
+![Screenshot 2024-05-19 224934](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/59ddc3d5-95d6-45f9-8064-a675b82bb7d4)
 
 ## Soal 7
 Aturlah agar Stilgar dari fremen dapat dapat bekerja sama dengan maksimal, lalu lakukan testing dengan 5000 request dan 150 request/second.
 
 ## Result Nomor 7
-
+![Screenshot 2024-05-19 232848](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f082b389-aa29-4e14-b00f-15f8201038f7)
+![Screenshot 2024-05-19 232858](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/0a214aab-3f66-403f-b7a1-2313ee51de5c)
 ## Soal 8 
 Karena diminta untuk menuliskan peta tercepat menuju spice, buatlah analisis hasil testing dengan 500 request dan 50 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
 a. Nama Algoritma Load Balancer
@@ -342,26 +346,56 @@ c. Grafik request per second untuk masing masing algoritma.
 d. Analisis 
 
 ## Result Nomor 8
+Generic Hash
+![Screenshot 2024-05-19 233000](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/08712c5e-5a0a-4f5a-b9ba-f600920ebe7c)
+![Screenshot 2024-05-19 233011](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/32bd38b2-bb55-40c4-9b22-eea0c8bd092b)
+
+Least Connection
+![Screenshot 2024-05-19 233128](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/36705651-d173-4356-8e6f-fc1539ef3e9a)
+![Screenshot 2024-05-19 233135](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/638a401c-d6d2-42b8-9192-f2ac48199aee)
+
+IP Hash
+![Screenshot 2024-05-19 233446](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/7bc3e472-9215-4388-9411-a30baadfe9e1)
+![Screenshot 2024-05-19 233451](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/4f07a840-7aa2-4c86-9ddf-2793a2f76df6)
 
 ## Soal 9 
 Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta.
 
 ## Result Nomor 9
+Worker 1
+![Screenshot 2024-05-19 234410](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/14b1e7c0-8478-49b9-acf2-cb848338a3f7)
+![Screenshot 2024-05-19 234418](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/286090ca-6280-4983-b617-171ec4567f70)
+
+Worker 2
+![Screenshot 2024-05-19 234318](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/bbb42ea4-366b-4eef-a440-9aaca2fed2f5)
+![Screenshot 2024-05-19 234324](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/4a51889b-aeea-49b3-8161-b0e0b403df17)
+
+worker 3 
+![Screenshot 2024-05-20 235234](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/863e4738-560d-4986-8b91-01b813ab536f)
+![Screenshot 2024-05-20 235249](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/9a4b276c-242d-4948-99ff-2656ca46a000)
 
 ## Soal 10 
 Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
 
 ## Result Nomor 10
+![Screenshot 2024-05-21 001441](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/e39b8b0d-0df5-4671-8fd6-1b2e23bb57e8)
+![Screenshot 2024-05-21 001457](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/bf3b9e1f-304a-452b-90c3-6c5e4ae40a33)
+![Screenshot 2024-05-21 001516](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/dbad016f-50f1-45a8-a4ca-9fedbe87ef96)
 
 ## Soal 11 
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/.
 
 ## Result Nomor 11
+![Screenshot 2024-05-21 011558](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/b9df6f72-5fb4-424d-8d2c-7fdee3bb006d)
 
 ## Soal 12
 Selanjutnya LB ini hanya boleh diakses oleh client dengan IP 192.239.1.37, 192.239.1.67, 192.239.2.203, dan 192.239.2.207.
 
 ## Result Nomor 12
+![Screenshot 2024-05-21 005030](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f5e6ef2f-22c0-41a5-b539-eae47399abb2)
+![Screenshot 2024-05-21 005650](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8c5facf8-d4df-4013-9b23-80cdc824b922)
+![Screenshot 2024-05-21 005657](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/c965a950-60de-4345-87fd-42640625d62e)
+![Screenshot 2024-05-21 005456](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/89113de8-6e7b-4e4f-a078-1af75cb73b3c)
 
 ## Soal 13
 Tidak mau kalah dalam perburuan spice, House atreides juga mengatur para pekerja di atreides.yyy.com.
