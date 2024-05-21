@@ -303,23 +303,35 @@ Kemudian, karena masih banyak spice yang harus dikumpulkan, bantulah para aterid
 Semua CLIENT harus menggunakan konfigurasi dari DHCP Server.
 Client yang melalui House Harkonen mendapatkan range IP dari 192.239.1.14 - 192.239.1.28 dan 192.239.1.49 - 192.239.1.70
 #### Penyelesaian 
-- Melkaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
+- Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
+
+## Result Nomor 2
 
 ## Soal 3
 Client yang melalui House Atreides mendapatkan range IP dari 192.239.2.15 - 192.239.2.25 dan 192.239.2 .200 - 192.239.2.210
 
+## Result Nomor 3
+
 ## Soal 4
 Client mendapatkan DNS dari Princess Irulan dan dapat terhubung dengan internet melalui DNS tersebut 
 
+## Result Nomor 4
+
 ## Soal 5 
 Durasi DHCP server meminjamkan alamat IP kepada Client yang melalui House Harkonen selama 5 menit sedangkan pada client yang melalui House Atreides selama 20 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit 
+
+## Result Nomor 5
 
 ## Soal 6
 Seiring berjalannya waktu kondisi semakin memanas, untuk bersiap perang. Klan Harkonen melakukan deployment sebagai berikut
 Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
 
+## Result Nomor 6
+
 ## Soal 7
 Aturlah agar Stilgar dari fremen dapat dapat bekerja sama dengan maksimal, lalu lakukan testing dengan 5000 request dan 150 request/second.
+
+## Result Nomor 7
 
 ## Soal 8 
 Karena diminta untuk menuliskan peta tercepat menuju spice, buatlah analisis hasil testing dengan 500 request dan 50 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
@@ -328,17 +340,27 @@ b. Report hasil testing pada Apache Benchmark
 c. Grafik request per second untuk masing masing algoritma. 
 d. Analisis 
 
+## Result Nomor 8
+
 ## Soal 9 
 Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta.
+
+## Result Nomor 9
 
 ## Soal 10 
 Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
 
+## Result Nomor 10
+
 ## Soal 11 
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/.
 
+## Result Nomor 11
+
 ## Soal 12
 Selanjutnya LB ini hanya boleh diakses oleh client dengan IP 192.239.1.37, 192.239.1.67, 192.239.2.203, dan 192.239.2.207.
+
+## Result Nomor 12
 
 ## Soal 13
 Tidak mau kalah dalam perburuan spice, House atreides juga mengatur para pekerja di atreides.yyy.com.
