@@ -995,8 +995,8 @@ echo "$config" > /etc/network/interfaces
 ## Result Nomor 12
 ### Selain Paul
 ![Screenshot 2024-05-21 005650](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8c5facf8-d4df-4013-9b23-80cdc824b922)
-### Pada client Paul
 ![Screenshot 2024-05-21 005657](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/c965a950-60de-4345-87fd-42640625d62e)
+### Pada client Paul
 ![Screenshot 2024-05-21 005456](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/89113de8-6e7b-4e4f-a078-1af75cb73b3c)
 
 ## Soal 13
