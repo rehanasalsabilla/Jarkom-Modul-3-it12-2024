@@ -518,7 +518,7 @@ echo 'server {
 
  service nginx restart
 ```
-- Melakukan command ```lynx localhost``` untuk cek konfigurasi webnya
+- Melakukan command pada worker ```lynx localhost``` untuk cek konfigurasi webnya
 
 ## Result Nomor 6
 ![Screenshot 2024-05-19 224304](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8512605c-4542-4464-93f5-5adc0be5fecf)
@@ -637,7 +637,7 @@ apt install htop -y
 apt install apache2-utils -y
 apt-get install jq -y
 ```
-- Melakukan Command ```ab -n 5000 -c 150 http://harkonen.it12.com/```
+- Melakukan Command pada client ```ab -n 5000 -c 150 http://harkonen.it12.com/```
 
 ## Result Nomor 7
 ![Screenshot 2024-05-19 232848](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f082b389-aa29-4e14-b00f-15f8201038f7)
@@ -721,7 +721,7 @@ rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 ```
-- Melakukan Command ```ab -n 500 -c 50 http://harkonen.it12.com/```
+- Melakukan Command pada client ```ab -n 500 -c 50 http://harkonen.it12.com/```
 
 ## Result Nomor 8
 ### Round-robin
@@ -748,8 +748,62 @@ Algoritma Round-robin menunjukkan performa terbaik dengan sekitar 380 poin, meng
 
 ## Soal 9 
 Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta
+- Script masih sama dengannomor 7. Namun disini melakukan run dan konfigurasi ulang yang berbeda sebanyak 3 kali sesuai jumlah worker yang diminta soal
+### Worker 1
+```
+echo ' upstream worker {
+    server 192.239.1.3;
+}
+```
+### Worker 2
+```
+echo ' upstream worker {
+    server 192.239.1.3;
+    server 192.239.1.4;
+}
+```
+### Worker 3
+```
+echo ' upstream worker {
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+```
+### Konfigurasi lengkap Stilgar.sh ( Contoh untuk 1 worker )
+```
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
 
-- 
+
+echo ' upstream worker {
+    server 192.239.1.3;
+    # server 192.239.1.4;
+    # server 192.239.1.5;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it12.com www.harkonen.it12.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+
+        proxy_pass http://worker;
+}
+
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+- Melakukan Command pada client ```ab -n 1000 -c 10 http://harkonen.it12.com/```
 
 ## Result Nomor 9
 ### Worker 1
@@ -772,6 +826,54 @@ Berdasarkan grafik performa pengujian algoritma Least-Connection dengan 1000 req
 
 ## Soal 10 
 Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
+- Menambahkan script untuk mkdir dan juga auth didalam Stilgar.sh
+```
+mkdir /etc/nginx/supersecret
+htpasswd -c /etc/nginx/supersecret/htpasswd secmart
+```
+```
+zauth_basic "Restricted Content";
+auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+```
+### Script Stilgar.sh lengkap 
+```
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+mkdir /etc/nginx/supersecret
+htpasswd -c /etc/nginx/supersecret/htpasswd secmart
+
+echo ' upstream worker {
+    server 192.239.1.3;
+    # server 192.239.1.4;
+    # server 192.239.1.5;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it12.com www.harkonen.it12.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+
+        proxy_pass http://worker;
+	zauth_basic "Restricted Content";
+	auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+}
+
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+- Melakukan Command pada client ```lynx http://harkonen.it12.com/```
+
 
 ## Result Nomor 10
 ![Screenshot 2024-05-21 001441](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/e39b8b0d-0df5-4671-8fd6-1b2e23bb57e8)
@@ -780,16 +882,120 @@ Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan 
 
 ## Soal 11 
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/.
+- Menambahkan script pada stilgar.sh ( Load balancer )
+```
+      location /dune {
+        proxy_pass https://www.dunemovie.com.au/;
+        proxy_set_header Host www.dunemovie.com.au;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+#### Script Stilgar.sh lengkap 
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install apache2-utils -y
+apt-get install nginx -y
+apt-get install lynx -y
+
+service nginx start
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+# mkdir /etc/nginx/supersecret
+# htpasswd -c /etc/nginx/supersecret/htpasswd secmart
+
+
+echo ' upstream worker {
+    #    hash $request_uri consistent;
+    #    least_conn;
+    #    ip_hash;
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it12.com www.harkonen.it12.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+        proxy_pass http://worker;
+        # zauth_basic "Restricted Content";
+        # auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+}
+#       location /dune {
+#         proxy_pass https://www.dunemovie.com.au/;
+#         proxy_set_header Host www.dunemovie.com.au;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+# }
+
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+- Melakukan Command pada client ```lynx http://harkonen.it12.com/dune```
 
 ## Result Nomor 11
 ![Screenshot 2024-05-21 011558](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/b9df6f72-5fb4-424d-8d2c-7fdee3bb006d)
 
 ## Soal 12
 Selanjutnya LB ini hanya boleh diakses oleh client dengan IP 192.239.1.37, 192.239.1.67, 192.239.2.203, dan 192.239.2.207.
+- Menambahkan script pada stilgar.sh
+```
+location / {
+    allow 192.239.1.37;
+    allow 192.239.1.67;
+    allow 192.239.2.203;  
+    allow 192.239.2.207;
+    deny all;
+proxy_pass http://worker;
+```
+
+- Selanjutnya menentukan client mana yang dapat memiliki akses ( disini saya menggunakan Paul ). Tambahkan konfigurasi pada Mohiam.sh
+```
+host Paul {
+    hardware ethernet f2:ec:68:ce:25:0e;
+    fixed-address 192.239.2.203;
+}
+```
+
+- Selanjutnya juga menambahkan konfigurasi pada script di node client
+```
+apt update
+apt install lynx -y
+apt install htop -y
+apt install apache2-utils -y
+apt-get install jq -y
+
+config="auto eth0
+iface eth0 inet dhcp
+hwaddress ether 72:b7:93:55:30:f5
+"
+echo "$config" > /etc/network/interfaces
+```
+
+- Melakukan Command pada client paul ```lynx http://harkonen.it12.com/\```
+
+#### IP Paul setelah konfigurasi:
+![Screenshot 2024-05-21 005030](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f5e6ef2f-22c0-41a5-b539-eae47399abb2)
 
 ## Result Nomor 12
-![Screenshot 2024-05-21 005030](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f5e6ef2f-22c0-41a5-b539-eae47399abb2)
+### Selain Paul
 ![Screenshot 2024-05-21 005650](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8c5facf8-d4df-4013-9b23-80cdc824b922)
+### Pada client Paul
 ![Screenshot 2024-05-21 005657](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/c965a950-60de-4345-87fd-42640625d62e)
 ![Screenshot 2024-05-21 005456](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/89113de8-6e7b-4e4f-a078-1af75cb73b3c)
 
