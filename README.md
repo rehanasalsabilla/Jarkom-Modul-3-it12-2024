@@ -312,20 +312,213 @@ Client yang melalui House Harkonen mendapatkan range IP dari 192.239.1.14 - 192.
 #### Penyelesaian 
 - Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
 
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-server -y
+
+interfaces="INTERFACESv4=\"eth0\"
+INTERFACESv6=\"\"
+"
+echo "$interfaces" > /etc/default/isc-dhcp-server
+
+subnet="option domain-name \"example.org\";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style-none;
+
+subnet 192.239.1.0 netmask 255.255.255.0 {
+    range 192.239.1.14 192.239.1.28;
+    range 192.239.1.49 192.239.1.70;
+    option routers 192.239.1.0;
+}
+```
+
 ## Soal 3
 Client yang melalui House Atreides mendapatkan range IP dari 192.239.2.15 - 192.239.2.25 dan 192.239.2 .200 - 192.239.2.210
+- Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-server -y
+
+interfaces="INTERFACESv4=\"eth0\"
+INTERFACESv6=\"\"
+"
+echo "$interfaces" > /etc/default/isc-dhcp-server
+
+subnet="option domain-name \"example.org\";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style-none;
+
+subnet 192.239.1.0 netmask 255.255.255.0 {
+    range 192.239.1.14 192.239.1.28;
+    range 192.239.1.49 192.239.1.70;
+    option routers 192.239.1.0;
+}
+
+subnet 192.239.2.0 netmask 255.255.255.0 {
+    range 192.239.2.15 192.239.2.25;
+    range 192.239.2.200 192.239.2.210;
+    option routers 192.239.2.0;
+}
+```
 
 ## Soal 4
 Client mendapatkan DNS dari Princess Irulan dan dapat terhubung dengan internet melalui DNS tersebut 
+- Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-server -y
+
+interfaces="INTERFACESv4=\"eth0\"
+INTERFACESv6=\"\"
+"
+echo "$interfaces" > /etc/default/isc-dhcp-server
+
+subnet="option domain-name \"example.org\";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style-none;
+
+subnet 192.239.1.0 netmask 255.255.255.0 {
+    range 192.239.1.14 192.239.1.28;
+    range 192.239.1.49 192.239.1.70;
+    option routers 192.239.1.0;
+    option broadcast-address 192.239.1.255;
+    option domain-name-servers 192.239.3.2;
+}
+
+subnet 192.239.2.0 netmask 255.255.255.0 {
+    range 192.239.2.15 192.239.2.25;
+    range 192.239.2.200 192.239.2.210;
+    option routers 192.239.2.0;
+    option broadcast-address 192.239.2.255;
+    option domain-name-servers 192.239.3.2;
+}
+
+subnet 192.239.3.0 netmask 255.255.255.0 {
+}
+
+subnet 192.239.4.0 netmask 255.255.255.0 {
+}
+```
+
 
 ## Soal 5 
 Durasi DHCP server meminjamkan alamat IP kepada Client yang melalui House Harkonen selama 5 menit sedangkan pada client yang melalui House Atreides selama 20 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit 
+- Melakaukan setup untuk Node **Mohiam.sh** ( DHCP Server )
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install isc-dhcp-server -y
+
+interfaces="INTERFACESv4=\"eth0\"
+INTERFACESv6=\"\"
+"
+echo "$interfaces" > /etc/default/isc-dhcp-server
+
+subnet="option domain-name \"example.org\";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style-none;
+
+subnet 192.239.1.0 netmask 255.255.255.0 {
+    range 192.239.1.14 192.239.1.28;
+    range 192.239.1.49 192.239.1.70;
+    option routers 192.239.1.0;
+    option broadcast-address 192.239.1.255;
+    option domain-name-servers 192.239.3.2;
+    default-lease-time 300;
+    max-lease-time 5220;
+}
+
+subnet 192.239.2.0 netmask 255.255.255.0 {
+    range 192.239.2.15 192.239.2.25;
+    range 192.239.2.200 192.239.2.210;
+    option routers 192.239.2.0;
+    option broadcast-address 192.239.2.255;
+    option domain-name-servers 192.239.3.2;
+    default-lease-time 1200;
+    max-lease-time 5220;
+}
+
+subnet 192.239.3.0 netmask 255.255.255.0 {
+}
+
+subnet 192.239.4.0 netmask 255.255.255.0 {
+}
+```
 
 ## Result Nomor 5
+![Screenshot 2024-05-19 212606](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/dcadf4b5-fcc0-47cf-b15d-ff27ae72bfac)
+![Screenshot 2024-05-19 212908](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8500411a-f462-4bb5-8e3e-544fa4597f88)
 
 ## Soal 6
 Seiring berjalannya waktu kondisi semakin memanas, untuk bersiap perang. Klan Harkonen melakukan deployment sebagai berikut
 Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
+- Konfigurasi untuk masing masing Worker
+### ex : Vladimir.sh
+```
+echo 'nameserver 192.239.3.2' > /etc/resolv.conf
+apt-get update
+apt-get install nginx -y
+apt-get install wget -y
+apt-get install unzip -y
+apt-get install lynx -y
+apt-get install htop -y
+apt-get install apache2-utils -y
+apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip -y
+
+service nginx start
+service php7.3-fpm start
+
+wget -O '/var/www/harkonen.it12.com' 'https://drive.usercontent.google.com/download?id=1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30&export=download&authuser=0' 
+unzip -o /var/www/harkonen.it12.com -d /var/www/
+rm /var/www/harkonen.it12.com
+mv /var/www/modul-3 /var/www/harkonen.it12.com
+
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/harkonen.it12.com
+ln -s /etc/nginx/sites-available/harkonen.it12.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+echo 'server {
+     listen 80;
+     server_name _;
+
+     root /var/www/harkonen.it12.com;
+     index index.php index.html index.htm;
+
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
+
+     location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+     }
+ }' > /etc/nginx/sites-available/harkonen.it12.com
+
+ service nginx restart
+```
+- Melakukan command ```lynx localhost``` untuk cek konfigurasi webnya
 
 ## Result Nomor 6
 ![Screenshot 2024-05-19 224304](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8512605c-4542-4464-93f5-5adc0be5fecf)
@@ -334,6 +527,117 @@ Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan kon
 
 ## Soal 7
 Aturlah agar Stilgar dari fremen dapat dapat bekerja sama dengan maksimal, lalu lakukan testing dengan 5000 request dan 150 request/second.
+- Mengarahkan Domain pada DNS Server ke domain Load Balancer Eisen :
+```
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+apt-get update
+apt-get install bind9 -y
+
+echo 'options {
+      directory "/var/cache/bind";
+
+      forwarders {
+              192.168.122.1;
+      };
+
+      // dnssec-validation auto;
+      allow-query{any;};
+      auth-nxdomain no;    # conform to RFC1035
+      listen-on-v6 { any; };
+}; ' > /etc/bind/named.conf.options
+
+echo "zone \"atreides.it12.com\" {
+	type master;
+	file \"/etc/bind/jarkom/atreides.it12.com\";
+};
+
+zone \"harkonen.it12.com\" {
+	type master;
+	file \"/etc/bind/jarkom/harkonen.it12.com\";
+};
+" > /etc/bind/named.conf.local
+
+mkdir /etc/bind/jarkom
+
+atreides="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    atreides.it12.com. root.atreides.it12.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    atreides.it12.com.
+@       IN    A    192.239.4.2
+"
+echo "$atreides" > /etc/bind/jarkom/atreides.it12.com
+
+harkonen="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    harkonen.it12.com. root.harkonen.it12.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    harkonen.it12.com.
+@       IN    A    192.239.4.2
+"
+echo "$harkonen" > /etc/bind/jarkom/harkonen.it12.com
+
+
+service bind9 start
+```
+- Melakukan konfigurasi pada Stilgar *( Load Balancer )*
+```
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+
+echo ' upstream worker {
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it12.com www.harkonen.it12.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+
+        proxy_pass http://worker;
+}
+
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+- Melakukan run konfigurasi pada Client ( Paul )
+```
+apt update
+apt install lynx -y
+apt install htop -y
+apt install apache2-utils -y
+apt-get install jq -y
+```
+- Melakukan Command ```ab -n 5000 -c 150 http://harkonen.it12.com/```
 
 ## Result Nomor 7
 ![Screenshot 2024-05-19 232848](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/f082b389-aa29-4e14-b00f-15f8201038f7)
@@ -344,6 +648,80 @@ a. Nama Algoritma Load Balancer
 b. Report hasil testing pada Apache Benchmark
 c. Grafik request per second untuk masing masing algoritma. 
 d. Analisis 
+
+- Script masih sama dengannomor 7. Namun disini melakukan run dan konfigurasi ulang yang berbeda sebanyak 4 kali sesuai load balancer yang diminta
+### Round-robin
+```
+echo ' upstream worker {
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+```
+### Generic Hash
+```
+echo ' upstream worker {
+    hash $request_uri consistent;
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+```
+### Least Connection
+```
+echo ' upstream worker {
+    least_conn;
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+```
+### IP Hash
+```
+echo ' upstream worker {
+    ip_hash;
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+```
+### Konfigurasi lengkap Stilgar.sh
+```
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+
+echo ' upstream worker {
+    #    hash $request_uri consistent;
+    #    least_conn;
+    #    ip_hash;
+    server 192.239.1.3;
+    server 192.239.1.4;
+    server 192.239.1.5;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it12.com www.harkonen.it12.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+
+        proxy_pass http://worker;
+}
+
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+- Melakukan Command ```ab -n 500 -c 50 http://harkonen.it12.com/```
 
 ## Result Nomor 8
 ### Round-robin
@@ -370,6 +748,7 @@ Algoritma Round-robin menunjukkan performa terbaik dengan sekitar 380 poin, meng
 
 ## Soal 9 
 Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta.
+
 
 ## Result Nomor 9
 ### Worker 1
