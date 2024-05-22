@@ -747,8 +747,9 @@ service nginx restart
 Algoritma Round-robin menunjukkan performa terbaik dengan sekitar 380 poin, mengindikasikan efisiensi tinggi dalam distribusi beban secara merata. Algoritma Least Connection dan Generic Hash berada di posisi menengah dengan masing-masing sekitar 250 dan 220 poin, menunjukkan kemampuan yang cukup kompetitif namun sedikit kurang optimal dibandingkan Round-robin. Sementara itu, algoritma IP Hash memiliki performa terendah dengan sekitar 200 poin, kemungkinan disebabkan oleh distribusi beban yang tidak merata dari alamat IP klien. Dengan demikian, Round-robin menjadi pilihan paling efisien dalam skenario ini
 
 ## Soal 9 
-Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta.
+Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta
 
+- 
 
 ## Result Nomor 9
 ### Worker 1
