@@ -346,15 +346,19 @@ c. Grafik request per second untuk masing masing algoritma.
 d. Analisis 
 
 ## Result Nomor 8
-Generic Hash
+#### Round-robin
+![Screenshot 2024-05-22 091941](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8fdb649a-7838-491a-b59a-c7cb8bac66b7)
+![Screenshot 2024-05-22 091952](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/7a38e4b9-50be-47e0-b354-e37c271dc1f6)
+
+#### Generic Hash
 ![Screenshot 2024-05-19 233000](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/08712c5e-5a0a-4f5a-b9ba-f600920ebe7c)
 ![Screenshot 2024-05-19 233011](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/32bd38b2-bb55-40c4-9b22-eea0c8bd092b)
 
-Least Connection
+#### Least Connection
 ![Screenshot 2024-05-19 233128](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/36705651-d173-4356-8e6f-fc1539ef3e9a)
 ![Screenshot 2024-05-19 233135](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/638a401c-d6d2-42b8-9192-f2ac48199aee)
 
-IP Hash
+#### IP Hash
 ![Screenshot 2024-05-19 233446](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/7bc3e472-9215-4388-9411-a30baadfe9e1)
 ![Screenshot 2024-05-19 233451](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/4f07a840-7aa2-4c86-9ddf-2793a2f76df6)
 
