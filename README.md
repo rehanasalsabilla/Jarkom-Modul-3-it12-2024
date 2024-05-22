@@ -365,6 +365,9 @@ d. Analisis
 ### Grafik : 
 ![Points scored](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/8939b7ce-e153-4d19-837d-ae0a677a5d0d)
 
+### Analisis :
+Algoritma Round-robin menunjukkan performa terbaik dengan sekitar 380 poin, mengindikasikan efisiensi tinggi dalam distribusi beban secara merata. Algoritma Least Connection dan Generic Hash berada di posisi menengah dengan masing-masing sekitar 250 dan 220 poin, menunjukkan kemampuan yang cukup kompetitif namun sedikit kurang optimal dibandingkan Round-robin. Sementara itu, algoritma IP Hash memiliki performa terendah dengan sekitar 200 poin, kemungkinan disebabkan oleh distribusi beban yang tidak merata dari alamat IP klien. Dengan demikian, Round-robin menjadi pilihan paling efisien dalam skenario ini
+
 ## Soal 9 
 Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta.
 
@@ -383,6 +386,9 @@ Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunaka
 
 ### Grafik :
 ![Points scored (1)](https://github.com/rehanasalsabilla/Jarkom-Modul-3-it12-2024/assets/136863633/2bc983f5-88cf-4793-8837-6aa81bad9f02)
+
+### Analisis : 
+Berdasarkan grafik performa pengujian algoritma Least-Connection dengan 1000 request pada laju 10 request per detik, terlihat bahwa dengan tiga worker, performa mencapai sekitar 380 poin, yang menunjukkan efisiensi tinggi dalam distribusi beban. Dengan dua worker, performa sedikit menurun menjadi sekitar 350 poin, menunjukkan bahwa sistem masih efisien meskipun beban per worker meningkat. Dengan satu worker, performa tetap sekitar 350 poin, menandakan bahwa satu worker mampu menangani beban dengan baik, meskipun tanpa redundansi. Secara keseluruhan, algoritma Least-Connection menunjukkan kemampuan yang baik dalam mendistribusikan beban secara efisien, dengan performa terbaik dicapai saat menggunakan tiga worker.
 
 ## Soal 10 
 Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
