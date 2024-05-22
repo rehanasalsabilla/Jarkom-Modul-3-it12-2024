@@ -1281,8 +1281,143 @@ Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Leto,
 - pm.max_spare_servers
 sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada PDF.
 
+### Penyelesaian
+Untuk mengerjakan soal ini terdapat beberapa penjelasan sebagai berikut
+
+```pm.max_children``` Menentukan jumlah maksimum pekerja PHP (proses anak) yang dapat berjalan secara bersamaan. Nilai ini sebaiknya disesuaikan dengan kapasitas sumber daya server. Jika terlalu rendah, server mungkin tidak dapat menangani banyak permintaan secara bersamaan, sementara jika terlalu tinggi, dapat menyebabkan kelebihan beban dan kekurangan sumber daya.
+
+```pm.start_servers``` Menentukan jumlah pekerja PHP yang akan dimulai secara otomatis ketika PHP-FPM pertama kali dijalankan atau direstart. Ini membantu dalam mengoptimalkan performa pada saat server pertama kali dimulai.
+
+```pm.min_spare_servers``` Menentukan jumlah minimum pekerja PHP yang tetap berjalan saat server berjalan. Ini membantu menjaga agar server tetap responsif terhadap permintaan bahkan saat lalu lintas rendah.
+
+```pm.max_spare_servers``` Menentukan jumlah maksimum pekerja PHP yang dapat berjalan tetapi tidak menangani permintaan. Jumlah ini disesuaikan dengan kebutuhan untuk menangani lonjakan lalu lintas tanpa menambahkan terlalu banyak sumber daya ketika beban rendah.
+
+Akan ada 4 konfigurasi terhadap proses ```package manager``` pada masing-masing worker yang nantinya akan dilakukan untuk testing.
+
+- Script 1
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart
+```
+
+- Script 2
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 25
+pm.start_servers = 5
+pm.min_spare_servers = 3
+pm.max_spare_servers = 10' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart
+```
+
+- Script 3
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 8
+pm.min_spare_servers = 5
+pm.max_spare_servers = 15' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart
+```
+
+- Script 4
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 75
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart
+```
+
+### Hasil 
+
 ## Soal 20 
 Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Stilgar. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
+### Penyelesaian
+Karena proses yang telah di konfigurasi sebelumnya pada masing-masing ```worker``` tepatnya pada ```package manager``` dan ternyata hasil yang diberikan juga tidak cukup untuk meningkatkan performa worker. Oleh karena itu, ditambahkan algoritma pada ```load balancer``` tersebut dengan menggunakan ```Least-connection``` dimana algoritma ini akan melakukan prioritas pembagian dari beban kinerja yang paling rendah. ```Node master``` akan mencatat semua beban dan kinerja dari semua node, dan akan melakukan prioritas dari beban yang paling rendah. Sehingga diharapkan tidak ada server dengan beban yang rendah.
+```
+echo 'upstream worker {
+    least_conn;
+    server 192.239.2.3:8001;
+    server 192.239.2.4:8002;
+    server 192.239.2.5:8003;
+}
+
+server {
+    listen 80;
+    server_name atreides.channel.it12.com www.atreides.channel.it12.com;
+
+    location / {
+        proxy_pass http://worker;
+    }
+} 
+' > /etc/nginx/sites-available/laravel-worker
+
+service nginx restart
+```
+Disini masih digunakan setup pada ```package manager``` sebagai berikut
+```
+pm = dynamic
+pm.max_children = 75
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20
+```
+
+### Hasil
 
 
